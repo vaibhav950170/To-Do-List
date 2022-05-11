@@ -2,13 +2,14 @@ from flask import request
 from flask_restx import Resource
 
 from ..util.dto import GroupDto
-from ..service.group_Service import save_new_group,add_user,delete_user,get_groups,get_public_id
+from ..service.group_Service import save_new_group,add_user,delete_user,get_groups,get_public_id,group_members
 from ..util.dto import UserDto
 
 api=GroupDto.api
 _group = GroupDto.group
 _group_user = GroupDto.group_user
 _group_list = GroupDto.group_list
+_group_members = GroupDto.group_members
 @api.route('/new_group')
 class createGroup(Resource):
 	@api.response(201,'Group successfully created.')
@@ -45,3 +46,11 @@ class showGroup(Resource):
 		data = request.json
 		public_id = (get_public_id(data['email']))
 		return get_groups(public_id)
+
+@api.route('/all_members')
+class all_members(Resource):
+	@api.response(201,'All users')
+	@api.expect(_group_members,validate=True)
+	def post(self):
+		data=request.json
+		return group_members(data['group_id'])
