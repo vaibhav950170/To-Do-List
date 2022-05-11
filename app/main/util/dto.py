@@ -31,6 +31,9 @@ class GroupDto:
     group_list = api.model('group_list',{
         'email':fields.String(required=True,description=' user public id'),
         })
+    group_members = api.model('group_members',{
+        'group_id':fields.String(required=True,description='users of a group')
+        })
 
 class TaskDto:
     api = Namespace('task',description = 'task related operations')
