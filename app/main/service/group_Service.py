@@ -102,3 +102,22 @@ def get_groups(public_id):
 		'message':'Group not exist'
 		}
 		return response_object,409
+	
+def group_members(group_id):
+	members = Group_user.query.filter_by(group_id_value=group_id).all()
+	if members:
+		user_info=[]
+		for i in range(len(members)):
+			user = User.query.filter_by(public_id=members[i].public_id).first()
+			info={
+			'name':user.first_name,
+			'email':user.email
+			}
+			user_info.append(info)
+		return user_info,201
+	else:
+		response_object={
+		'status':'fail',
+		'message':'Invalid information'
+		}
+		return response_object,409
